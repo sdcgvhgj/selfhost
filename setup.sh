@@ -5,18 +5,18 @@ read password
 echo "your password is: $password"
 
 set -x
-apt update
-apt upgrade
+apt update -y
+apt upgrade -y
 
 echo ----------Trojan----------
 cd /root
 mkdir trojan
 cd trojan
 wget https://github.com/p4gefau1t/trojan-go/releases/download/v0.10.6/trojan-go-linux-amd64.zip
-apt install unzip
+apt install -y unzip
 unzip trojan-go-linux-amd64.zip
 curl https://get.acme.sh | sh
-apt install socat
+apt install -y socat 
 ln -s /root/.acme.sh/acme.sh /usr/local/bin/acme.sh
 acme.sh --register-account -m sdcgvhgj@qq.com
 acme.sh --issue -d sdcgvhgj.top --standalone -k ec-256
@@ -34,13 +34,13 @@ ssl:
   key: server.key
   sni: sdcgvhgj.top
 " > config.yaml
-apt install nginx
+apt install -y nginx
 nohup ./trojan-go > trojan.log 2>&1 &
 iptables -t nat -A PREROUTING -p tcp --dport 10000:12000 -j REDIRECT --to-port 10000
 iptables -t nat -A PREROUTING -p udp --dport 10000:12000 -j REDIRECT --to-port 10000
 
 echo ----------Aria----------
-apt install aria2
+apt install -y aria2
 mkdir /root/.aria2
 touch /root/.aria2/aria2.session
 touch /root/.aria2/aria2.conf
