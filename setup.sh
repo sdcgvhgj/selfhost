@@ -2,7 +2,7 @@
 set -x
 apt update
 apt upgrade
-# ----------Trojan----------
+echo ----------Trojan----------
 cd /root
 mkdir trojan
 cd trojan
@@ -33,7 +33,7 @@ apt install nginx
 nohup ./trojan-go > trojan.log 2>&1 &
 iptables -t nat -A PREROUTING -p tcp --dport 10000:20000 -j REDIRECT --to-port 10000
 iptables -t nat -A PREROUTING -p udp --dport 10000:20000 -j REDIRECT --to-port 10000
-# ----------Aria----------
+echo ----------Aria----------
 apt install aria2
 mkdir /root/.aria2
 touch /root/.aria2/aria2.session
@@ -54,7 +54,7 @@ rpc-listen-all=true
 #rpc-private-key=/root/trojan/server.key
 ' > /root/.aria2/aria2.conf
 aria2c --daemon=true --conf-path=/root/.aria2/aria2.conf
-# ----------Filebrowser----------
+echo ----------Filebrowser----------
 cd /root
 mkdir filebrowser
 cd filebrowser
@@ -64,8 +64,10 @@ tar -zxvf linux-amd64-filebrowser.tar.gz
 ./filebrowser config set --address 0.0.0.0 --baseurl '/f' --port 10001 --log ./filebrowser.log --root /home/download
 ./filebrowser users add admin Lsl752500@@ --perm.admin
 nohup ./filebrowser > /dev/null 2>&1 &
-# ----------Nginx----------
+echo ----------Nginx----------
 cd /var/www/html
+mkdir a
+cd a
 wget https://github.com/mayswind/AriaNg/releases/download/1.3.3/AriaNg-1.3.3.zip
 unzip AriaNg-1.3.3.zip
 echo '
