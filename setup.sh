@@ -1,13 +1,13 @@
 #!/bin/bash
 
-#!/bin/bash
-
 echo "password:"
 read password
+echo "your password is: $password"
 
 set -x
 apt update
 apt upgrade
+
 echo ----------Trojan----------
 cd /root
 mkdir trojan
@@ -38,6 +38,7 @@ apt install nginx
 nohup ./trojan-go > trojan.log 2>&1 &
 iptables -t nat -A PREROUTING -p tcp --dport 10000:12000 -j REDIRECT --to-port 10000
 iptables -t nat -A PREROUTING -p udp --dport 10000:12000 -j REDIRECT --to-port 10000
+
 echo ----------Aria----------
 apt install aria2
 mkdir /root/.aria2
@@ -59,6 +60,7 @@ rpc-listen-all=true
 #rpc-private-key=/root/trojan/server.key
 " > /root/.aria2/aria2.conf
 aria2c --daemon=true --conf-path=/root/.aria2/aria2.conf
+
 echo ----------Filebrowser----------
 cd /root
 mkdir filebrowser
@@ -69,6 +71,7 @@ tar -zxvf linux-amd64-filebrowser.tar.gz
 ./filebrowser config set --address 0.0.0.0 --baseurl '/f' --port 10001 --log ./filebrowser.log --root /home/download
 ./filebrowser users add admin $password --perm.admin
 nohup ./filebrowser > /dev/null 2>&1 &
+
 echo ----------Nginx----------
 cd /var/www/html
 mkdir a
