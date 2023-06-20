@@ -97,5 +97,5 @@ server {
 }
 ' > /etc/nginx/sites-enabled/default
 nginx -t
-system start nginx
-system reload nginx
+systemctl start nginx
+systemctl reload nginx
