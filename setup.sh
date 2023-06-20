@@ -12,7 +12,7 @@ unzip trojan-go-linux-amd64.zip
 curl https://get.acme.sh | sh
 apt install socat
 ln -s /root/.acme.sh/acme.sh /usr/local/bin/acme.sh
-acme.sh --register-account -m 1171556648@qq.com
+acme.sh --register-account -m sdcgvhgj@qq.com
 acme.sh --issue -d sdcgvhgj.top --standalone -k ec-256
 acme.sh --installcert -d sdcgvhgj.top --ecc --key-file /root/trojan/server.key --fullchain-file /root/trojan/server.crt
 touch config.json
@@ -95,6 +95,9 @@ server {
 	server_name sdcgvhgj.top;
 	location / {
 		rewrite ^(.*)$ https://$host$1 permanent;
+	}
+ 	location /a {
+		try_files $uri $uri/ =404;
 	}
 }
 ' > /etc/nginx/sites-enabled/default
