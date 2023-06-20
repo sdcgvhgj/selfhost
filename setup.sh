@@ -1,4 +1,14 @@
 #!/bin/bash
+
+echo "Please enter your domain name:"
+read domain_name
+
+echo "Please enter your password:"
+read password
+
+echo "DomainName: $domain_name"
+echo "Password: $password"
+
 set -x
 apt update
 apt upgrade
@@ -12,9 +22,9 @@ unzip trojan-go-linux-amd64.zip
 curl https://get.acme.sh | sh
 apt install socat
 ln -s /root/.acme.sh/acme.sh /usr/local/bin/acme.sh
-acme.sh --register-account -m sdcgvhgj@qq.com
-acme.sh --issue -d sdcgvhgj.top --standalone -k ec-256
-acme.sh --installcert -d sdcgvhgj.top --ecc --key-file /root/trojan/server.key --fullchain-file /root/trojan/server.crt
+acme.sh --register-account -m your_email@gmail.com
+acme.sh --issue -d $domain_name --standalone -k ec-256
+acme.sh --installcert -d $domain_name --ecc --key-file /root/trojan/server.key --fullchain-file /root/trojan/server.crt
 touch config.json
 echo '{
   "run_type": "server",
@@ -22,17 +32,17 @@ echo '{
   "local_port": 10000,
   "remote_addr": "127.0.0.1",
   "remote_port": 80,
-  "password": ["Lsl752500@@"],
+  "password": ["$password"],
   "ssl": {
     "cert": "server.crt",
     "key": "server.key",
-    "sni": "sdcgvhgj.top"
+    "sni": "$domain_name"
   }
 }' > config.json
 apt install nginx
 nohup ./trojan-go > trojan.log 2>&1 &
-iptables -t nat -A PREROUTING -p tcp --dport 10000:20000 -j REDIRECT --to-port 10000
-iptables -t nat -A PREROUTING -p udp --dport 10000:20000 -j REDIRECT --to-port 10000
+iptables -t nat -A PREROUTING -p tcp --dport 10000:11000 -j REDIRECT --to-port 10000
+iptables -t nat -A PREROUTING -p udp --dport 10000:11000 -j REDIRECT --to-port 10000
 echo ----------Aria----------
 apt install aria2
 mkdir /root/.aria2
@@ -45,7 +55,7 @@ save-session=/root/.aria2/aria2.session
 log=/root/.aria2/aria2.log
 continue=true
 enable-rpc=true
-rpc-secret=123123
+rpc-secret=$password
 rpc-listen-port=6800
 rpc-allow-origin-all=true
 rpc-listen-all=true
@@ -62,7 +72,7 @@ wget https://github.com/filebrowser/filebrowser/releases/download/v2.23.0/linux-
 tar -zxvf linux-amd64-filebrowser.tar.gz
 ./filebrowser config init
 ./filebrowser config set --address 0.0.0.0 --baseurl '/f' --port 10001 --log ./filebrowser.log --root /home/download
-./filebrowser users add admin Lsl752500@@ --perm.admin
+./filebrowser users add admin $password --perm.admin
 nohup ./filebrowser > /dev/null 2>&1 &
 echo ----------Nginx----------
 cd /var/www/html
@@ -73,7 +83,7 @@ unzip AriaNg-1.3.3.zip
 echo '
 server {
 	listen 443 ssl;
-	server_name sdcgvhgj.top;
+	server_name $domain_name;
 	ssl_certificate /root/trojan/server.crt;
 	ssl_certificate_key /root/trojan/server.key;
 	root /var/www/html;
@@ -92,7 +102,7 @@ server {
 }
 server {
 	listen 80;
-	server_name sdcgvhgj.top;
+	server_name $domain_name;
 	location / {
 		rewrite ^(.*)$ https://$host$1 permanent;
 	}
