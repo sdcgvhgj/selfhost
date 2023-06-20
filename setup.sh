@@ -97,6 +97,7 @@ server {
 		rewrite ^(.*)$ https://$host$1 permanent;
 	}
  	location /a {
+  		root /var/www/html;
 		try_files $uri $uri/ =404;
 	}
 }
