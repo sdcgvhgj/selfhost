@@ -100,8 +100,9 @@ server {
 }
 server {
 	listen 80;
+ 	root /var/www/html;
 	server_name sdcgvhgj.top;
-	location / {
+ 	location / {
 		rewrite ^(.*)$ https://$host$1 permanent;
 	}
  	location /a {
