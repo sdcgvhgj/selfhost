@@ -97,15 +97,19 @@ server {
 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 		proxy_set_header X-Real-Ip $remote_addr;
 	}
+	location /files {
+		autoindex on;
+		root /home;
+	}
 }
 server {
 	listen 80;
- 	root /var/www/html;
+	root /var/www/html;
 	server_name sdcgvhgj.top;
- 	location / {
+	location / {
 		rewrite ^(.*)$ https://$host$1 permanent;
 	}
- 	location /a {
+	location /a {
 		try_files $uri $uri/ =404;
 	}
 }
