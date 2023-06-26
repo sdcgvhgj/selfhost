@@ -78,6 +78,7 @@ mkdir a
 cd a
 wget https://github.com/mayswind/AriaNg/releases/download/1.3.3/AriaNg-1.3.3.zip
 unzip AriaNg-1.3.3.zip
+mkdir /home/files
 echo '
 server {
 	listen 443 ssl;
