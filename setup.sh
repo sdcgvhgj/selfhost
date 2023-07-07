@@ -86,22 +86,6 @@ echo \
 apt update
 apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-echo ----------NextCloud----------
-acme.sh --issue -d cloud.sdcgvhgj.top --standalone -k ec-256
-acme.sh --installcert -d cloud.sdcgvhgj.top --ecc --key-file /root/trojan/cloud.key --fullchain-file /root/trojan/cloud.crt
-docker run \
--d \
---sig-proxy=false \
---name nextcloud-aio-mastercontainer \
---restart always \
---publish 8080:8080 \
---env APACHE_PORT=10002 \
---env APACHE_IP_BINDING=0.0.0.0 \
---volume nextcloud_aio_mastercontainer:/mnt/docker-aio-config \
---volume /var/run/docker.sock:/var/run/docker.sock:ro \
---env NEXTCLOUD_DATADIR="/home" \
-nextcloud/all-in-one:latest
-
 echo ----------Nginx----------
 apt install -y nginx
 cd /var/www/html
@@ -146,6 +130,26 @@ server {
 	}
 }
 ' > /etc/nginx/sites-enabled/default
+nginx -t
+systemctl start nginx
+systemctl reload nginx
+
+echo ----------NextCloud----------
+systemctl stop nginx
+acme.sh --issue -d cloud.sdcgvhgj.top --standalone -k ec-256
+acme.sh --installcert -d cloud.sdcgvhgj.top --ecc --key-file /root/trojan/cloud.key --fullchain-file /root/trojan/cloud.crt
+docker run \
+-d \
+--sig-proxy=false \
+--name nextcloud-aio-mastercontainer \
+--restart always \
+--publish 8080:8080 \
+--env APACHE_PORT=10002 \
+--env APACHE_IP_BINDING=0.0.0.0 \
+--volume nextcloud_aio_mastercontainer:/mnt/docker-aio-config \
+--volume /var/run/docker.sock:/var/run/docker.sock:ro \
+--env NEXTCLOUD_DATADIR="/home" \
+nextcloud/all-in-one:latest
 echo '
 server {
     listen 80;
