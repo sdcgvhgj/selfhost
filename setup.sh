@@ -73,6 +73,7 @@ tar -zxvf linux-amd64-filebrowser.tar.gz
 nohup ./filebrowser > /dev/null 2>&1 &
 
 echo ----------Docker----------
+for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
 apt update
 apt install -y ca-certificates curl gnupg
 install -m 0755 -d /etc/apt/keyrings
