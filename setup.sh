@@ -90,6 +90,7 @@ echo ----------NextCloud----------
 acme.sh --issue -d cloud.sdcgvhgj.top --standalone -k ec-256
 acme.sh --installcert -d cloud.sdcgvhgj.top --ecc --key-file /root/trojan/cloud.key --fullchain-file /root/trojan/cloud.crt
 docker run \
+-d \
 --sig-proxy=false \
 --name nextcloud-aio-mastercontainer \
 --restart always \
