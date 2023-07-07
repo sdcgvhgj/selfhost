@@ -95,10 +95,6 @@ wget https://github.com/mayswind/AriaNg/releases/download/1.3.3/AriaNg-1.3.3.zip
 unzip AriaNg-1.3.3.zip
 mkdir /home/files
 echo '
-map $http_upgrade $connection_upgrade {
-    default upgrade;
-    '' close;
-}
 server {
 	listen 443 ssl;
 	server_name sdcgvhgj.top;
@@ -155,6 +151,10 @@ docker run \
 --env NEXTCLOUD_DATADIR="/home" \
 nextcloud/all-in-one:latest
 echo '
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
 server {
     listen 80;
     listen [::]:80;            # comment to disable IPv6
