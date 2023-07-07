@@ -6,7 +6,7 @@ echo "your password is: $password"
 
 set -x
 apt update -y
-apt upgrade -y
+# apt upgrade -y
 
 echo ----------Trojan----------
 cd /root
@@ -143,7 +143,7 @@ docker run \
 --sig-proxy=false \
 --name nextcloud-aio-mastercontainer \
 --restart always \
---publish 8080:8080 \
+--publish 20001:8080 \
 --env APACHE_PORT=10002 \
 --env APACHE_IP_BINDING=0.0.0.0 \
 --volume nextcloud_aio_mastercontainer:/mnt/docker-aio-config \
