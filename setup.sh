@@ -151,10 +151,6 @@ docker run \
 --env NEXTCLOUD_DATADIR="/home" \
 nextcloud/all-in-one:latest
 echo '
-map $http_upgrade $connection_upgrade {
-    default upgrade;
-    '' close;
-}
 server {
     listen 80;
     listen [::]:80;            # comment to disable IPv6
@@ -185,11 +181,6 @@ server {
         client_body_buffer_size 512k;
         proxy_read_timeout 86400s;
         client_max_body_size 0;
-
-        # Websocket
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection $connection_upgrade;
     }
 
     ssl_certificate /root/trojan/cloud.crt;
