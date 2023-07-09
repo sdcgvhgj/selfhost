@@ -25,7 +25,7 @@ echo "
 run-type: server
 local-addr: 0.0.0.0
 local-port: 10000
-remote-addr: 127.0.0.1
+remote-addr: tcs.nju.edu.cn
 remote-port: 80
 password:
   - $password
@@ -132,7 +132,6 @@ server {
 ' > /etc/nginx/sites-enabled/default
 nginx -t
 systemctl start nginx
-systemctl reload nginx
 
 echo ----------NextCloud----------
 systemctl stop nginx
@@ -197,4 +196,3 @@ server {
 ' > /etc/nginx/sites-enabled/cloud
 nginx -t
 systemctl start nginx
-systemctl reload nginx
