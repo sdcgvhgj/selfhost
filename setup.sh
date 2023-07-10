@@ -138,7 +138,7 @@ systemctl stop nginx
 acme.sh --issue -d cloud.sdcgvhgj.top --standalone -k ec-256
 acme.sh --installcert -d cloud.sdcgvhgj.top --ecc --key-file /root/trojan/cloud.key --fullchain-file /root/trojan/cloud.crt
 docker run \
--d \
+--detach \
 --sig-proxy=false \
 --name nextcloud-aio-mastercontainer \
 --restart always \
@@ -147,7 +147,6 @@ docker run \
 --env APACHE_IP_BINDING=0.0.0.0 \
 --volume nextcloud_aio_mastercontainer:/mnt/docker-aio-config \
 --volume /var/run/docker.sock:/var/run/docker.sock:ro \
---env NEXTCLOUD_DATADIR="/home" \
 nextcloud/all-in-one:latest
 echo '
 server {
