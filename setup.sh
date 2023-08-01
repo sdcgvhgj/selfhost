@@ -30,13 +30,17 @@ remote-port: 80
 password:
   - $password
 ssl:
-  cert: server.crt
-  key: server.key
+  cert: /root/trojan/server.crt
+  key: /root/trojan/server.key
   sni: sdcgvhgj.top
 " > config.yaml
 nohup ./trojan-go > trojan.log 2>&1 &
 iptables -t nat -A PREROUTING -p tcp --dport 10000:12000 -j REDIRECT --to-port 10000
 iptables -t nat -A PREROUTING -p udp --dport 10000:12000 -j REDIRECT --to-port 10000
+# (crontab -l; echo "@reboot iptables -t nat -A PREROUTING -p tcp --dport 10000:12000 -j REDIRECT --to-port 10000") | crontab -
+# (crontab -l; echo "@reboot iptables -t nat -A PREROUTING -p udp --dport 10000:12000 -j REDIRECT --to-port 10000") | crontab -
+(crontab -l; echo "@reboot nohup /root/trojan/trojan-go --config /root/trojan/config.yaml > /root/trojan/trojan.log 2>&1 &") | crontab -
+# iptables -t nat -L PREROUTING -nv --line-number
 
 echo ----------Aria----------
 apt install -y aria2
